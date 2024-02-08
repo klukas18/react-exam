@@ -3,7 +3,7 @@ import { ShoppingListContext } from '../ShoppingListContext/ShoppingListContext'
 
 import './ShoppingList.css';
 
-const ShoppingList = () => {
+const ShoppingList = ({ toggleCrossedOut, crossedProducts }) => {
 	const { items, removeFromShoppingList } = useContext(ShoppingListContext);
 
 	return (
@@ -13,7 +13,13 @@ const ShoppingList = () => {
 					key={index}
 					onContextMenu={(event) => {
 						event.preventDefault();
-						removeFromShoppingList(item);
+						toggleCrossedOut(item);
+					}}
+					onClick={() => removeFromShoppingList(item)}
+					style={{
+						textDecoration: crossedProducts.includes(item.name)
+							? 'line-through'
+							: 'none',
 					}}>
 					<h2>
 						{item.name} ({item.count})

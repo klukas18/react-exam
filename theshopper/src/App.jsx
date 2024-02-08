@@ -14,6 +14,7 @@ function App() {
 	const [name, setName] = useState('');
 	const [category, setCategory] = useState('');
 	const [isFood, setIsFood] = useState(false);
+	const [crossedProducts, setCrossedProducts] = useState([]);
 
 	// Adding and removing elements from the shopping list
 
@@ -60,6 +61,18 @@ function App() {
 		setFilteredProducts(filtered);
 	}, [name, category, isFood, productList]);
 
+	const toggleCrossedOut = (product) => {
+		setCrossedProducts((prevItems) => {
+			if (prevItems.includes(product.name)) {
+				// If the item is already crossed out, remove it from the list
+				return prevItems.filter((item) => item !== product.name);
+			} else {
+				// If the item is not crossed out, add it to the list
+				return [...prevItems, product.name];
+			}
+		});
+	};
+
 	return (
 		<ShoppingListContext.Provider
 			value={{
@@ -97,7 +110,10 @@ function App() {
 					/>{' '}
 					Only food
 				</div>
-				<ShoppingList />
+				<ShoppingList
+					toggleCrossedOut={toggleCrossedOut}
+					crossedProducts={crossedProducts}
+				/>
 			</div>
 		</ShoppingListContext.Provider>
 	);
