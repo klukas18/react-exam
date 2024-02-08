@@ -1,5 +1,5 @@
-import React, { useState, useCallback, useEffect } from 'react';
-import ListActions from './components/ListActions/ListActions';
+import React, { useState, useEffect } from 'react';
+
 import ProductsList from './components/ProductsList/ProductsList';
 import ShoppingList from './components/ShoppingList/ShoppingList';
 import products from './common/consts/products';
@@ -9,7 +9,7 @@ import './App.css';
 
 function App() {
 	const [shoppingList, setShoppingList] = useState([]);
-	const [allProducts] = useState(products);
+	const [productList, setProductList] = useState(products);
 	const [filteredProducts, setFilteredProducts] = useState(products);
 	const [name, setName] = useState('');
 	const [category, setCategory] = useState('');
@@ -31,6 +31,7 @@ function App() {
 			}
 		});
 	};
+
 	const removeFromShoppingList = (product) => {
 		setShoppingList((prevList) =>
 			prevList.filter((item) => item.name !== product.name)
@@ -39,7 +40,9 @@ function App() {
 
 	// Filtering the products list
 
-	const categories = [...new Set(products.map((product) => product.category))];
+	const categories = [
+		...new Set(productList.map((product) => product.category)),
+	];
 
 	const filterProducts = (products, name, category, isFood) => {
 		return products.filter(
@@ -53,9 +56,9 @@ function App() {
 	};
 
 	useEffect(() => {
-		let filtered = filterProducts(allProducts, name, category, isFood);
+		let filtered = filterProducts(productList, name, category, isFood);
 		setFilteredProducts(filtered);
-	}, [name, category, isFood]);
+	}, [name, category, isFood, productList]);
 
 	return (
 		<ShoppingListContext.Provider
@@ -65,7 +68,11 @@ function App() {
 				removeFromShoppingList,
 			}}>
 			<div className='columns'>
-				<ProductsList products={filteredProducts} />
+				<ProductsList
+					products={filteredProducts}
+					productList={productList}
+					setProductList={setProductList}
+				/>
 				<div>
 					<input
 						type='text'
@@ -90,7 +97,6 @@ function App() {
 					/>{' '}
 					Only food
 				</div>
-				{/* <ListActions /> */}
 				<ShoppingList />
 			</div>
 		</ShoppingListContext.Provider>
