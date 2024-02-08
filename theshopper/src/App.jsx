@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-
+import { ShoppingListContext } from './components/ShoppingListContext/ShoppingListContext';
 import ProductsList from './components/ProductsList/ProductsList';
 import ShoppingList from './components/ShoppingList/ShoppingList';
+import FilterForm from './components/FilterForm/FilterForm';
+import NewProductForm from './components/NewProductForm/NewProductForm';
 import products from './common/consts/products';
-import { ShoppingListContext } from './components/ShoppingListContext/ShoppingListContext';
-
 import './App.css';
 
 function App() {
@@ -61,6 +61,8 @@ function App() {
 		setFilteredProducts(filtered);
 	}, [name, category, isFood, productList]);
 
+	// Crossing out products in the shopping list
+
 	const toggleCrossedOut = (product) => {
 		setCrossedProducts((prevItems) => {
 			if (prevItems.includes(product.name)) {
@@ -86,29 +88,20 @@ function App() {
 					productList={productList}
 					setProductList={setProductList}
 				/>
-				<div>
-					<input
-						type='text'
-						value={name}
-						onChange={(e) => setName(e.target.value)}
-						placeholder='Filter by name'
+				<div className='actions'>
+					<FilterForm
+						name={name}
+						setName={setName}
+						category={category}
+						setCategory={setCategory}
+						isFood={isFood}
+						setIsFood={setIsFood}
+						categories={categories}
 					/>
-					<select
-						value={category}
-						onChange={(e) => setCategory(e.target.value)}>
-						<option value=''>All categories</option>
-						{categories.map((category, index) => (
-							<option key={index} value={category}>
-								{category}
-							</option>
-						))}
-					</select>
-					<input
-						type='checkbox'
-						checked={isFood}
-						onChange={(e) => setIsFood(e.target.checked)}
-					/>{' '}
-					Only food
+					<NewProductForm
+						productList={productList}
+						setProductList={setProductList}
+					/>
 				</div>
 				<ShoppingList
 					toggleCrossedOut={toggleCrossedOut}

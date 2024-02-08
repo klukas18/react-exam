@@ -24,7 +24,6 @@ const ShoppingList = ({ toggleCrossedOut, crossedProducts }) => {
 					<h2>
 						{item.name} ({item.count})
 					</h2>
-					<p>{item.description}</p>
 				</div>
 			))}
 		</div>
