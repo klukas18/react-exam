@@ -1,0 +1,26 @@
+.shoppingList {
+	height: 80%;
+	border: 1px solid #d8d8d8;
+	background-color: rgba(0, 0, 0, 0.5);
+	overflow-y: auto;
+	color: #d8d8d8;
+}
+
+.shoppingListItem {
+	border: 1px solid #333333;
+	padding: 10px 20px;
+	display: flex;
+	justify-content: space-between;
+
+	button {
+		background: var(--clr-4);
+		color: white;
+		border: none;
+		padding: 10px 20px;
+		border-radius: 10px;
+		cursor: pointer;
+	}
+	button:hover {
+		background: var(--clr-5);
+	}
+}

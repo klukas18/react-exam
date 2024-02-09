@@ -5,7 +5,11 @@ import ShoppingList from './components/ShoppingList/ShoppingList';
 import FilterForm from './components/FilterForm/FilterForm';
 import NewProductForm from './components/NewProductForm/NewProductForm';
 import products from './common/consts/products';
-import './App.css';
+
+// import gsap from 'gsap';
+// import { useGSAP } from '@gsap/react';
+
+import styles from './App.module.css';
 
 function App() {
 	const [shoppingList, setShoppingList] = useState([]);
@@ -82,13 +86,14 @@ function App() {
 				addToShoppingList,
 				removeFromShoppingList,
 			}}>
-			<div className='columns'>
+			<h1 className={styles.textGradient}>The Shopper</h1>
+			<div className={styles.container}>
 				<ProductsList
 					products={filteredProducts}
 					productList={productList}
 					setProductList={setProductList}
 				/>
-				<div className='actions'>
+				<div className={styles.actions}>
 					<FilterForm
 						name={name}
 						setName={setName}

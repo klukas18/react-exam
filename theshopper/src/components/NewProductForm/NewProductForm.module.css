@@ -1,0 +1,63 @@
+.showButton {
+	margin: 20px;
+	height: 40px;
+	width: 130px;
+	border-radius: 10px;
+	color: white;
+	outline: none;
+	background-color: rgb(62, 62, 62);
+}
+
+.showButton:hover {
+	background-color: rgb(28, 28, 28);
+	animation: pulse 2s infinite;
+}
+
+.formBox {
+	display: flex;
+	flex-direction: column-reverse;
+	align-items: center;
+}
+.newProductForm {
+	display: flex;
+	padding: 20px;
+	gap: 10px;
+	color: white;
+	background-color: rgb(45, 44, 44, 0.8);
+	flex-direction: column;
+	align-items: center;
+	border: 1px solid rgb(146, 146, 146);
+	border-radius: 20px;
+
+	input {
+		padding: 10px;
+		border-radius: 10px;
+		color: white;
+		background-color: rgb(62, 62, 62);
+		border: 1px solid var(--clr-4);
+	}
+
+	.addButton {
+		color: white;
+		height: 40px;
+		width: 100%;
+		border: 1px solid var(--clr-4);
+		border-radius: 10px;
+		background-color: rgb(28, 28, 28);
+	}
+	.addButton:hover {
+		background-color: var(--clr-4);
+	}
+}
+
+@keyframes pulse {
+	0% {
+		transform: scale(1);
+	}
+	50% {
+		transform: scale(1.1);
+	}
+	100% {
+		transform: scale(1);
+	}
+}

@@ -1,5 +1,7 @@
 import React from 'react';
 
+import styles from './FilterForm.module.css';
+
 const FilterForm = ({
 	name,
 	setName,
@@ -10,7 +12,7 @@ const FilterForm = ({
 	categories,
 }) => {
 	return (
-		<div className='filter'>
+		<div className={styles.filterInput}>
 			<input
 				type='text'
 				value={name}
@@ -25,12 +27,14 @@ const FilterForm = ({
 					</option>
 				))}
 			</select>
-			<input
-				type='checkbox'
-				checked={isFood}
-				onChange={(e) => setIsFood(e.target.checked)}
-			/>{' '}
-			Only food
+			<div>
+				<input
+					type='checkbox'
+					checked={isFood}
+					onChange={(e) => setIsFood(e.target.checked)}
+				/>{' '}
+				Show only food
+			</div>
 		</div>
 	);
 };

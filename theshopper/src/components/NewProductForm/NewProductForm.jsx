@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 
+import styles from './NewProductForm.module.css';
+
 const NewProductForm = ({ productList, setProductList }) => {
 	const [newProduct, setNewProduct] = useState({
 		name: '',
@@ -23,12 +25,14 @@ const NewProductForm = ({ productList, setProductList }) => {
 	};
 
 	return (
-		<div>
-			<button onClick={() => setShowForm(!showForm)}>
+		<div className={styles.formBox}>
+			<button
+				onClick={() => setShowForm(!showForm)}
+				className={styles.showButton}>
 				{showForm ? 'Hide' : 'Add product'}
 			</button>
 			{showForm && (
-				<form onSubmit={handleSubmit}>
+				<form onSubmit={handleSubmit} className={styles.newProductForm}>
 					<input
 						type='text'
 						name='name'
@@ -51,10 +55,12 @@ const NewProductForm = ({ productList, setProductList }) => {
 							name='isFood'
 							checked={newProduct.isFood}
 							onChange={handleCheckboxChange}
-						/>
-						Is Food
+						/>{' '}
+						That's food
 					</label>
-					<button type='submit'>Add New Product</button>
+					<button type='submit' className={styles.addButton}>
+						Add New Product
+					</button>
 				</form>
 			)}
 		</div>

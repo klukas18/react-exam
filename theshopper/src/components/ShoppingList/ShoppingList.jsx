@@ -1,15 +1,16 @@
 import React, { useContext } from 'react';
 import { ShoppingListContext } from '../ShoppingListContext/ShoppingListContext';
 
-import './ShoppingList.css';
+import styles from './ShoppingList.module.css';
 
 const ShoppingList = ({ toggleCrossedOut, crossedProducts }) => {
 	const { items, removeFromShoppingList } = useContext(ShoppingListContext);
 
 	return (
-		<div>
+		<div className={styles.shoppingList}>
 			{items.map((item, index) => (
 				<div
+					className={styles.shoppingListItem}
 					key={index}
 					onContextMenu={(event) => {
 						event.preventDefault();
