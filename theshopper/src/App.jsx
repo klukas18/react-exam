@@ -6,9 +6,6 @@ import FilterForm from './components/FilterForm/FilterForm';
 import NewProductForm from './components/NewProductForm/NewProductForm';
 import products from './common/consts/products';
 
-// import gsap from 'gsap';
-// import { useGSAP } from '@gsap/react';
-
 import styles from './App.module.css';
 
 function App() {
