@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { ShoppingListContext } from './components/ShoppingListContext/ShoppingListContext';
 import ProductsList from './components/ProductsList/ProductsList';
 import ShoppingList from './components/ShoppingList/ShoppingList';
@@ -12,14 +12,15 @@ function App() {
 	const [shoppingList, setShoppingList] = useState([]);
 	const [productList, setProductList] = useState(products);
 	const [filteredProducts, setFilteredProducts] = useState(products);
-	const [name, setName] = useState('');
-	const [category, setCategory] = useState('');
-	const [isFood, setIsFood] = useState(false);
-	const [crossedProducts, setCrossedProducts] = useState([]);
+	const [filter, setFilter] = useState({
+		name: '',
+		category: '',
+		isFood: false,
+	});
 
 	// Adding and removing elements from the shopping list
 
-	const addToShoppingList = (product) => {
+	const addToShoppingList = useCallback((product) => {
 		setShoppingList((prevList) => {
 			const existingItem = prevList.find((item) => item.name === product.name);
 			if (existingItem) {
@@ -32,49 +33,45 @@ function App() {
 				return [...prevList, { ...product, count: 1 }];
 			}
 		});
-	};
+	}, []);
 
-	const removeFromShoppingList = (product) => {
+	const removeFromShoppingList = useCallback((product) => {
 		setShoppingList((prevList) =>
 			prevList.filter((item) => item.name !== product.name)
 		);
-	};
+	}, []);
 
 	// Filtering the products list
 
-	const categories = [
-		...new Set(productList.map((product) => product.category)),
-	];
+	const categories = useMemo(() => {
+		return [...new Set(productList.map((product) => product.category))];
+	}, [productList]);
 
-	const filterProducts = (products, name, category, isFood) => {
-		return products.filter(
-			(product) =>
-				(name
-					? product.name.toLowerCase().includes(name.toLowerCase())
-					: true) &&
-				(category ? product.category === category : true) &&
-				(isFood ? product.isFood === isFood : true)
-		);
-	};
+	const filterProducts = useCallback(
+		(products, filter) => {
+			return products.filter(
+				(product) =>
+					(filter.name
+						? product.name.toLowerCase().includes(filter.name.toLowerCase())
+						: true) &&
+					(filter.category ? product.category === filter.category : true) &&
+					(filter.isFood ? product.isFood === filter.isFood : true)
+			);
+		},
+		[filter]
+	);
 
 	useEffect(() => {
-		let filtered = filterProducts(productList, name, category, isFood);
+		let filtered = filterProducts(productList, filter);
 		setFilteredProducts(filtered);
-	}, [name, category, isFood, productList]);
+	}, [filter, productList]);
 
-	// Crossing out products in the shopping list
-
-	const toggleCrossedOut = (product) => {
-		setCrossedProducts((prevItems) => {
-			if (prevItems.includes(product.name)) {
-				// If the item is already crossed out, remove it from the list
-				return prevItems.filter((item) => item !== product.name);
-			} else {
-				// If the item is not crossed out, add it to the list
-				return [...prevItems, product.name];
-			}
-		});
-	};
+	const handleProductSubmit = useCallback(
+		(newProduct) => {
+			setProductList([...productList, newProduct]);
+		},
+		[productList]
+	);
 
 	return (
 		<ShoppingListContext.Provider
@@ -92,23 +89,13 @@ function App() {
 				/>
 				<div className={styles.actions}>
 					<FilterForm
-						name={name}
-						setName={setName}
-						category={category}
-						setCategory={setCategory}
-						isFood={isFood}
-						setIsFood={setIsFood}
+						filter={filter}
+						setFilter={setFilter}
 						categories={categories}
 					/>
-					<NewProductForm
-						productList={productList}
-						setProductList={setProductList}
-					/>
+					<NewProductForm onProductSubmit={handleProductSubmit} />
 				</div>
-				<ShoppingList
-					toggleCrossedOut={toggleCrossedOut}
-					crossedProducts={crossedProducts}
-				/>
+				<ShoppingList />
 			</div>
 		</ShoppingListContext.Provider>
 	);

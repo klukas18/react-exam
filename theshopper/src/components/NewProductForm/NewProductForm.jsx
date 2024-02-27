@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import styles from './NewProductForm.module.css';
 
-const NewProductForm = ({ productList, setProductList }) => {
+const NewProductForm = ({ onProductSubmit }) => {
 	const [newProduct, setNewProduct] = useState({
 		name: '',
 		category: '',
@@ -11,24 +11,26 @@ const NewProductForm = ({ productList, setProductList }) => {
 	const [showForm, setShowForm] = useState(false);
 
 	const handleInputChange = (event) => {
-		setNewProduct({ ...newProduct, [event.target.name]: event.target.value });
+		const value =
+			event.target.type === 'checkbox'
+				? event.target.checked
+				: event.target.value;
+		setNewProduct({ ...newProduct, [event.target.name]: value });
 	};
 
-	const handleCheckboxChange = (event) => {
-		setNewProduct({ ...newProduct, isFood: event.target.checked });
+	const toggleForm = () => {
+		setShowForm((prevShowForm) => !prevShowForm);
 	};
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		setProductList([...productList, newProduct]);
+		onProductSubmit(newProduct);
 		setNewProduct({ name: '', category: '', isFood: false });
 	};
 
 	return (
 		<div className={styles.formBox}>
-			<button
-				onClick={() => setShowForm(!showForm)}
-				className={styles.showButton}>
+			<button onClick={toggleForm} className={styles.showButton}>
 				{showForm ? 'Hide' : 'Add product'}
 			</button>
 			{showForm && (
@@ -54,7 +56,7 @@ const NewProductForm = ({ productList, setProductList }) => {
 							type='checkbox'
 							name='isFood'
 							checked={newProduct.isFood}
-							onChange={handleCheckboxChange}
+							onChange={handleInputChange}
 						/>{' '}
 						That's food
 					</label>

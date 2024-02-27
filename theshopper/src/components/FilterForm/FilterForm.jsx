@@ -2,24 +2,27 @@ import React from 'react';
 
 import styles from './FilterForm.module.css';
 
-const FilterForm = ({
-	name,
-	setName,
-	category,
-	setCategory,
-	isFood,
-	setIsFood,
-	categories,
-}) => {
+const FilterForm = ({ filter, setFilter, categories }) => {
+	const { name, category, isFood } = filter;
+
+	const handleInputChange = (event) => {
+		const value =
+			event.target.type === 'checkbox'
+				? event.target.checked
+				: event.target.value;
+		setFilter({ ...filter, [event.target.name]: value });
+	};
+
 	return (
 		<div className={styles.filterInput}>
 			<input
 				type='text'
+				name='name'
 				value={name}
-				onChange={(e) => setName(e.target.value)}
+				onChange={handleInputChange}
 				placeholder='Filter by name'
 			/>
-			<select value={category} onChange={(e) => setCategory(e.target.value)}>
+			<select name='category' value={category} onChange={handleInputChange}>
 				<option value=''>All categories</option>
 				{categories.map((category, index) => (
 					<option key={index} value={category}>
@@ -30,8 +33,9 @@ const FilterForm = ({
 			<div>
 				<input
 					type='checkbox'
+					name='isFood'
 					checked={isFood}
-					onChange={(e) => setIsFood(e.target.checked)}
+					onChange={handleInputChange}
 				/>{' '}
 				Show only food
 			</div>
